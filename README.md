@@ -1,2 +1,6 @@
 # assignment-task
-hit npm run server to start
+Please refer branch -> new ,
+
+npm install ,
+
+npm start
