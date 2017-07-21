@@ -1,7 +1,8 @@
-import React from "react";
-import { Jumbotron } from "react-bootstrap";
+import React, { Component } from "react";
+import { Table,Jumbotron,Col,Clearfix } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 
-class AboutUs extends React.Component {
+class AboutUs extends Component {
     render() {
         console.log("routeParams", this.props.route);
         return (<div>
@@ -33,19 +34,17 @@ class AboutUs extends React.Component {
         );
     }
     componentDidMount() {
-        if (this.props.route.path === "/aboutus/profile") {
+        console.log(this.props.match.path);
+        if (this.props.match.path === "/aboutus/profile") {
             window.scrollTo(0, 500);
-        } else if (this.props.route.path === "/aboutus/team") {
+        } else if (this.props.match.path === "/aboutus/team") {
             window.scrollTo(0, 1000);
-        }else if (this.props.route.path === "/aboutus/contact") {
+        }else if (this.props.match.path === "/aboutus/contact") {
             window.scrollTo(0, 1500);
         }
     }
 }
 
-AboutUs.propTypes = {
-    route: React.PropTypes.object
-};
-
-
 export default AboutUs;
+
+

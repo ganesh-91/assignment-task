@@ -1,21 +1,18 @@
-import React from "react";
-import { Button, FormGroup, FormControl, Form, Col } from "react-bootstrap";
+import React, { Component } from "react";
+import { FormGroup,FormControl,Col,Form,Button } from "react-bootstrap";
 import { connect } from "react-redux";
+import loginAction from "../../action/loginAction";
 
-import loginAction from "../action/loginAction";
-import validations from "../utils/inputValidation.jsx";
-import { navigate } from "../utils/route";
-
-class Login extends React.Component {
+class Login extends Component {
     constructor() {
         super();
         this.saveClickHandler = this.saveClickHandler.bind(this);
     }
     render() {
         return (
-            <div>
+            <Col md={4} mdOffset={4}>
                 {this.getFormTemplate()}
-            </div>
+            </Col>
         );
     }
 
@@ -39,6 +36,18 @@ class Login extends React.Component {
             </Form>
         );
     }
+
+    emailValidation(value) {
+    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (value === "") {
+            return null;
+        } else if (emailRegex.test(value)) {
+            return "success";
+        } else if (!(emailRegex.test(value))) {
+            return "error";
+        }
+    }
+
     updateEmail(e) {
         this.props.updateLoginData({ prop: "userName", value: e.target.value });
         this.props.updateLoginData({ prop: "userNameValid", value: true });
@@ -53,7 +62,7 @@ class Login extends React.Component {
             if (this.props.loginData.userName === "") {
                 this.props.updateLoginData({ prop: "userNameValid", value: false });
             }
-            if (validations.email(this.props.loginData.userName) === "error") {
+            if (this.emailValidation(this.props.loginData.userName) === "error") {
                 this.props.updateLoginData({ prop: "userNameValid", value: false });
             }
             if (this.props.loginData.password === "") {
@@ -66,10 +75,10 @@ class Login extends React.Component {
                 { prop: "userNameValid", value: true }
             ];
             resetList.map((list) => {
-                this.props.updateLoginData(list.prop, list.value);
+                return(this.props.updateLoginData(list.prop, list.value));
             });
             //  ajax call here , in then the user will be routed to home page
-            navigate("home");
+            this.props.history.push('/home');
         }
     }
 
@@ -86,11 +95,6 @@ const mapStateToProps = (store) => {
     return {
         loginData: store
     };
-};
-
-Login.propTypes = {
-    updateLoginData: React.PropTypes.func,
-    loginData: React.PropTypes.object
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
